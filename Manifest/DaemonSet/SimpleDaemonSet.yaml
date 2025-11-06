@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ds
+spec:
+  selector:
+    matchLabels:
+      app: item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      nodeSelector:
+        disk: ssd
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+          - containerPort: 80

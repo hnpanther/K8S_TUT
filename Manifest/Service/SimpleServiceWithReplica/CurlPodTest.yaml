@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+  namespace: hnp
+spec:
+  containers:
+  - name: test
+    image: curlimages/curl
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
+
+
+
+
+# test service with curl:
+# k exec -it -n hnp test -- curl 10.98.55.237:8080 -v
+# k exec -it -n hnp test -- curl nginx-srv:8080 -v   (use coredns)
+
+# k delete pod -n hnp test --force (if need) 

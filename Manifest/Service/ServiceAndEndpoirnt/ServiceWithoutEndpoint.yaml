@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+  namespace: hnp
+spec:
+  type: ExternalName
+  externalName: someapi.somecompany.com #dns
+  ports:
+  - port: 80
