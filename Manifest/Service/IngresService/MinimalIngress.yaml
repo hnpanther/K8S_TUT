@@ -18,3 +18,29 @@ spec:
             name: nginx-np
             port:
               number: 8080
+
+
+# another way
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  namespace: hnp
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nginxk8s.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-np
+            port:
+              number: 8080
+
+
+
+
