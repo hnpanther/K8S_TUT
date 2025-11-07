@@ -114,3 +114,9 @@ k get job
 
 -- cron job
 k get cronjobs.batch
+
+
+
+-- run dnsutils for test HeadLessService
+kubectl run dnsutils -n hnp --image=tutum/dnsutils --command -- sleep infinity
+kubectl exec -n hnp dnsutils -- nslookup nginx-headless

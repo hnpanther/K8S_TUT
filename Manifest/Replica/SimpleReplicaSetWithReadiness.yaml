@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+spec:
+  replicas: 2
+  selector:
+    # matchLabels:
+    #   app: item
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        readinessProbe:
+          exec:
+            command:
+            - ls
+            - /var/ready
+        ports:
+          - containerPort: 80
+
+# we can exec to container and create /ver/ready for start and select container

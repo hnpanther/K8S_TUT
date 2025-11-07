@@ -12,3 +12,7 @@ k get cm -n kube-system coredns -o yaml
 
 
 ------------------------------------------------------------------------
+
+livness -> check if service(pod) not live, restart pod
+readiness -> whene container is ready, then service select it
+headless service -> connect to pods without a service between request and pod
