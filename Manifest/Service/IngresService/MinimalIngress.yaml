@@ -41,6 +41,28 @@ spec:
             port:
               number: 8080
 
+# another way for /hnp:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-rs-ingress
+  namespace: hnp
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nginxk8s.local
+    http:
+      paths:
+      - path: /hnp
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-np
+            port:
+              number: 8080
+
 
 
 
