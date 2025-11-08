@@ -35,3 +35,15 @@ access nginx controller:
 kubectl create -f deployments/service/nodeport.yaml
 check:
 k get service -n nginx-ingress
+
+
+
+
+how to delete all installed:
+kubectl delete namespace nginx-ingress
+k delete ingressclasses.networking.k8s.io nginx
+....
+
+
+
+install version 1.x:
