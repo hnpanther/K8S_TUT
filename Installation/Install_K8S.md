@@ -96,6 +96,7 @@ containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
 
 # اطمینان از استفاده از SystemdCgroup=true
 sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+# we'd better edit file with file editor
 
 sudo systemctl enable --now containerd
 sudo systemctl restart containerd
@@ -122,8 +123,15 @@ server = "http://192.168.220.1:5000"
 and it's very important:
 The [plugins."io.containerd.grpc.v1.cri".registry] config only applies to Kubernetes clients that use CRI like crictl or kubectl. For ctr, you need to specify the hosts path via the cli, e.g.
 
+and set path config:
+[plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = "/etc/containerd/certs.d"
+and comment another things in this part
+
 sudo ctr images pull --hosts-dir "/etc/containerd/certs.d" docker.io/hello/hello:latest
 
+
+sudo systemctl restart containerd
 
 
 =============================================
