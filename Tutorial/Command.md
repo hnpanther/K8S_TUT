@@ -137,3 +137,7 @@ on local system:
 ssh -L 8080:localhost:8080 user@192.168.211.131
 http://localhost:8080
 
+
+-- how to check node port service connect to endpoint:
+kubectl get endpoints -n longhorn-system
+
