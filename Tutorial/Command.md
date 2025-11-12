@@ -124,3 +124,16 @@ kubectl exec -n hnp dnsutils -- nslookup nginx-headless
 
 -- access to a contianer of pod(if not specify -c, then connect to first container)
 kubectl exec -it -n hnp my-pod-vol -c my-pod-vol-1 -- sh
+
+
+-- how to check kubelet logs on nodes:
+sudo journalctl -u kubelet -f
+
+
+-- access longhorn dashboard outside of cluster just for test:
+on master:
+kubectl -n longhorn-system port-forward svc/longhorn-frontend 8080:80
+on local system:
+ssh -L 8080:localhost:8080 user@192.168.211.131
+http://localhost:8080
+
