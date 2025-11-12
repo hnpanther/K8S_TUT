@@ -120,3 +120,7 @@ k get cronjobs.batch
 -- run dnsutils for test HeadLessService
 kubectl run dnsutils -n hnp --image=tutum/dnsutils --command -- sleep infinity
 kubectl exec -n hnp dnsutils -- nslookup nginx-headless
+
+
+-- access to a contianer of pod(if not specify -c, then connect to first container)
+kubectl exec -it -n hnp my-pod-vol -c my-pod-vol-1 -- sh

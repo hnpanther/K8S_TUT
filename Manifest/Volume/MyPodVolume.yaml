@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod-vol
+  namespace: hnp
+spec:
+  containers:
+    - image: alpine
+      imagePullPolicy: IfNotPresent
+      name: my-pod-vol-1
+
+      command: ['sh', '-c', 'echo my-pod-vol-1 running ; sleep 3600']
+
+      volumeMounts:
+        - mountPath: /demo1
+          name: demo-volume
+
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "16Mi"
+        limits:
+          cpu: "50m"
+          memory: "64Mi"
+    
+    - image: alpine
+      imagePullPolicy: IfNotPresent
+      name: my-pod-vol-2
+
+      command: ['sh', '-c', 'echo my-pod-vol-2 running ; sleep 3600']
+
+      volumeMounts:
+        - mountPath: /demo2
+          name: demo-volume
+
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "16Mi"
+        limits:
+          cpu: "50m"
+          memory: "64Mi"
+
+    - image: alpine
+      imagePullPolicy: IfNotPresent
+      name: my-pod-vol-3
+
+      command: ['sh', '-c', 'echo my-pod-vol-3 running ; sleep 3600']
+
+      volumeMounts:
+        - mountPath: /demo3
+          name: demo-volume
+
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "16Mi"
+        limits:
+          cpu: "50m"
+          memory: "64Mi"
+
+  volumes:
+    - name: demo-volume
+      emptyDir: {}
+      # emptyDir: 
+      #   medium: Memory

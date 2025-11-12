@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://www.schemastore.org/yamllint.json": "file:///d%3A/LocalStorage/Containers/K8S_TUT/Manifest/Volume/MyPodVolume.yaml"
+    }
+}
