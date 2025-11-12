@@ -1,4 +1,4 @@
-install nginx ingress controller with manifest
+install nginx ingress controller with manifest(it's not community please check way2)
 
 first download repo:
 git clone https://github.com/nginx/kubernetes-ingress.git --branch v5.2.1
@@ -44,7 +44,8 @@ kubectl delete namespace nginx-ingress
 k delete ingressclasses.networking.k8s.io nginx
 ....
 
-
+=====================================
+way2:
 
 install version 1.x:
 download https://github.com/kubernetes/ingress-nginx/blob/main/deploy/static/provider/baremetal/deploy.yaml
