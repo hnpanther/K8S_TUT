@@ -156,3 +156,16 @@ k get cm nginx-conf -o yaml
 we can edit config map at runtime and after few seccond, it effects on container(if we not use subPath):
 k edit configmaps -n hnp nginx-config
 edit with vim and save
+
+
+-- use secrets and set ssl for nginx
+create key:
+openssl genrsa -out https.key 2048
+create certificate
+openssl req -new -x509 -key https.key -out https.cert -days 3650 -subj /CN=www.hnptest.com
+
+echo one > two
+
+k create secret generic nginx-https --from-file=https.key --from-file=https.cert --from-file=two -n hnp
+
+also we have image pull secret, we can set this secret for deoployment or replica and so on, to use this user pass for pull image from repository
