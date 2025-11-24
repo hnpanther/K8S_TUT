@@ -1,0 +1,35 @@
+# k create configmap -n hnp nginx-config --from-literal=port=8888 --from-literal=abc=xyz
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  namespace: hnp
+spec:
+  replicas: 2
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        # env:
+        #   - name: test
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: nginx-config
+        #         key: port
+        envFrom:
+        - prefix: CONFIG_
+          configMapRef:
+            name: nginx-config
+        ports:
+          - containerPort: 80

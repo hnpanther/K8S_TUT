@@ -1,0 +1,36 @@
+# k create configmap -n hnp nginx-config --from-file=nginx-config.conf
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  namespace: hnp
+spec:
+  replicas: 2
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+        - name: config
+          # mountPath: /etc/nginx/conf.d   # if we use this line, other file in conf.d has gone! or hidden
+          mountPath: /etc/nginx/conf.d/nginx-config.conf
+          subPath: nginx-config.conf
+          readOnly: true
+          # defaultMode: "6600" #if need permission
+        ports:
+          - containerPort: 80
+      volumes:
+      - name: config
+        configMap:
+          name: nginx-config

@@ -141,3 +141,18 @@ http://localhost:8080
 -- how to check node port service connect to endpoint:
 kubectl get endpoints -n longhorn-system
 
+
+-- create config map with command
+k create configmap nginx-config --from-literal=port=8888 --from-literal=abc=xyz
+
+or create nginx-conf.conf:
+port=8888
+abc=xyz
+
+then 
+k create configmap nginx-config --from-file=nginx-conf.conf
+k get cm nginx-conf -o yaml
+
+we can edit config map at runtime and after few seccond, it effects on container(if we not use subPath):
+k edit configmaps -n hnp nginx-config
+edit with vim and save
