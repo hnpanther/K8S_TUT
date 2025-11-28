@@ -169,3 +169,44 @@ echo one > two
 k create secret generic nginx-https --from-file=https.key --from-file=https.cert --from-file=two -n hnp
 
 also we have image pull secret, we can set this secret for deoployment or replica and so on, to use this user pass for pull image from repository
+
+
+
+-- get data about cluster ip and coredns:
+kubectl cluster-info
+kubectl cluster-info dump => get more details
+
+after find ip we can use curl to connect api server:
+curl https://192.168.211.131:6443 -k
+but it says 403!
+for now we can use kubectl proxy and connect to api server with proxy:
+ kubectl proxy
+ then we can use all api
+ for example get list of jobs:
+ curl localhost:8001/apis/batch/v1/jobs
+ or list of replicaset:
+ curl localhost:8001/apis/apps/v1/replicasets
+
+
+also we can use curl image(Manifest/Metadata/CurlPodApiServer.yaml)
+we run k get svc
+and find kubernetes service name
+then exec to curl container(k exec -it -n hnp test -- sh)
+run
+env
+and find KUBERNETES_SERVICE_HOST (is k8s ip for connection to api server)
+curl kubernetes.default -v -> we get certificate problem
+in path ls /var/run/secrets/kubernetes.io/serviceaccount/ we have ca.crt and use this certificate for connection
+curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://kubernetes.default
+again we get 403
+we have a token in this path: /var/run/secrets/kubernetes.io/serviceaccount/token
+create env for simplicity:
+TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+and finally  we need enable cluster role binding for anonymos user:
+kubectl create clusterrolebinding cluster-system-anonymous --clusterrole=cluster-admin --user=system:anonymous
+
+then:
+curl -H "Authorization: Bearer $TOKEN" --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://kubernetes.default
+
+but it has security problem and we should delete clusterrolebinding after doing own work:
+k delete clusterrolebindings.rbac.authorization.k8s.io cluster-system-anonymous
