@@ -210,3 +210,24 @@ curl -H "Authorization: Bearer $TOKEN" --cacert /var/run/secrets/kubernetes.io/s
 
 but it has security problem and we should delete clusterrolebinding after doing own work:
 k delete clusterrolebindings.rbac.authorization.k8s.io cluster-system-anonymous
+
+
+
+---------------------------------
+indeed deployment is replicaset + versioning
+after create a deployment we can change version of image and apply again
+we can use below command to see history:
+k rollout history deployment -n hnp
+k rollout status deployment -n hnp
+
+if we use --record true in creation deployment we can see cause changes in status:
+k apply -f nginxdp.yaml --record=true
+
+we can undo:
+k rollout undo -n hnp deployment nginx-dp
+
+we can restart using k rollout restart and so on
+
+back to specefic version(find revision using history):
+k rollout undo -n hnp deployment nginx-dp --to-revision=1
+
