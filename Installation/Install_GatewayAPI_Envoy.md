@@ -60,3 +60,9 @@ spec:
 
 ---------------------------------
 
+important:
+envoy just work on one node(deploy as 1 deployment) to change it and access our app on all node like real node port behavior
+we should for created svc for gateway change externalTrafficPolicy from Local to Cluster:
+
+with k edit svc ... or below command:
+kubectl patch svc envoy-edge-shared-gw-6e588405 -n envoy-gateway-system -p '{"spec":{"externalTrafficPolicy":"Cluster"}}'
