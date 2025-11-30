@@ -45,7 +45,7 @@ k delete ingressclasses.networking.k8s.io nginx
 ....
 
 =====================================
-way2:
+way2: 
 
 install version 1.x:
 download https://github.com/kubernetes/ingress-nginx/blob/main/deploy/static/provider/baremetal/deploy.yaml
