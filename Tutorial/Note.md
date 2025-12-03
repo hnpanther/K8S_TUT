@@ -117,3 +117,31 @@ we have rbac plugin that check authenticaton and autoriation
 create new service account:
 k create serviceaccount -n hnp hnp
 k get sa -n hnp
+
+-----
+role based control access or rbac
+role and rolebinding -> access in namespace
+clusterrole and clusterrolebinding -> role in whole cluster like node 
+role and pod is many to many releationship
+
+list of clusterrolebinding:
+k get clusterrolebindings.rbac.authorization.k8s.io
+if we have permissive binding is so dengreous and should be delete in production
+
+without permissive first create role and role binding then test:
+kubectl auth can-i list services -n hnp2 --as=system:serviceaccount:hnp2:hnp
+
+or use PodTestWithServiceAccount:
+k exec -it -n hnp2 test -- curl localhost:8001/api/v1/namespaces/hnp2/services
+
+some resource like persistent volume is cluster base, for that we should use ClusterRole and ClusterRoleBinding
+then test:
+k exec -it -n hnp2 test -- curl localhost:8001/api/v1/persistentvolumes
+
+role and rolebinding is namespace base
+we can use global clusterrole and attach to multiple rolebinding and so on
+
+another way(correct way rather than custom kube-proxy) to test after enter to pod:
+k exec -it -n hnp2 test -- sh
+TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+curl -H "Authorization: Bearer $TOKEN" --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://kubernetes.default.svc/api/v1/persistentvolumes
