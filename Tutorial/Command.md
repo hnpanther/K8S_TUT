@@ -231,3 +231,16 @@ we can restart using k rollout restart and so on
 back to specefic version(find revision using history):
 k rollout undo -n hnp deployment nginx-dp --to-revision=1
 
+--------------------------------
+
+every namespace has a default service account that manage communication between pods
+service accound is a resource
+k get serviceaccounts -n hnp
+k get serviceaccounts -n hnp -o yaml
+
+we can use jq command:
+k get pod -n hnp -o json | jq .items
+
+how to see token of service account in container:
+k exec -it -n hnp test -- cat /var/run/secrets/kubernetes.io/serviceaccount/token
+

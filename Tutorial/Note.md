@@ -106,3 +106,14 @@ kubelet,kube-proxy,kubeadm,containerd not image and pod, everything else is pod
 
 ---------------------------------
 
+security:
+
+we have multiple builtin group in k8s:
+authenticated user, unauthenticated user, service account, namespace service account
+each pod has one service account, if we don't create new service accouont, default account attach to pod
+
+we have rbac plugin that check authenticaton and autoriation
+
+create new service account:
+k create serviceaccount -n hnp hnp
+k get sa -n hnp
