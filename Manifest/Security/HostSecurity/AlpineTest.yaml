@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+  namespace: hnp
+spec:
+  #  hostNetwork: true
+  #  hostPID: true
+  #  hostIPC: true
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      readOnlyRootFilesystem: true   # is so important
+      #      runAsUser: 405
+      #      runAsNonRoot: true # is so important
+      #      privileged: true # full control and access to host and should be false
+      #      capabilities:
+      #        add:
+      #        - SYS_TIME
+      #       drop:
+      #       - CHOWN
+
+
+# test:
+# k exec -it -n hnp alpine -- ifconfig
+# for securityContext test user:
+# k exec -it -n hnp alpine -- id
+# we can add some capability to pod
+# with this options we can access to host(worker) inside pod
+# we can set this options on pod instead of container level

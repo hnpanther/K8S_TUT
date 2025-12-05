@@ -145,3 +145,41 @@ another way(correct way rather than custom kube-proxy) to test after enter to po
 k exec -it -n hnp2 test -- sh
 TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 curl -H "Authorization: Bearer $TOKEN" --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt https://kubernetes.default.svc/api/v1/persistentvolumes
+
+-------------------------------------------
+Security -> HostSecurity
+some kubernetes component like kube-proxy needs to change iptable host or connect to real interface of host
+so we have something that help us to connect pod to real interface but it's a security issues
+HostNetwork and HostPort exists for that
+HostPID = true => our process in pod get a pid from host and HostIPC = true our pod use ipc namespace of host
+
+using securityContext we can set HostPID and so on and we can set run as a user and so on
+runAsNonRoot: true is so important
+
+we have fsGroup supplementalGroups
+supplementalGroups use for group add on default
+fs group => all volume will be fs group for permissons
+supplementalGroups => for extra group
+
+for secure pod globally(secure all pod) we should use PodSecurityPolicy but is deprecated
+and we should use PodSecurityAdmission or third parties(like kubewarden)
+ with pod sevurity standard with 3 profile:
+1-Priviledge => full access
+2-Baseline => average
+3-Restricted => best practice secure
+before apply and create pod this plugin check and validate
+
+for use in creation namespace:
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-priviledge-namespace
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+
+
+
+NetworkPolicy:
+access pods together in same or different namespace
+default: every pods can access every pods
