@@ -216,3 +216,50 @@ if we apply ResourceQuota, every pod shoud have request and limit otherwise it's
 so we'd better use LimitRange for Default for all pods
 
 by k descrive resourcequotas  => we can see used and and hard resource
+
+
+-----------------------------
+Scheduling
+we can use somethings to control scheduling on nodes
+Taint => about node
+Toleration => about pod
+a pod if tolerate , taint of node, can deploy on this node
+if we want to decide a pod run on a node or no we use taint and toleration
+but if we want pod itself descide to run which node, it's about afinity and anti-afinity
+
+for example if we describe master we can see:
+Taints:             node-role.kubernetes.io/control-plane:NoSchedule => if a node has kubernters-role=control-plane, no pod can deploy on it or a pod should tolerate exatly this taint
+
+
+node-role.kubernetes.io/control-plane:NoSchedule
+key => node-role.kubernetes.io
+value => control-plane
+effect => NoSchedule  => just pod run this node if tolerate this
+effect => PreferSchedule => if exists another need, schedule there
+effect => NoExecute => running pod run on node 14, if we set node 14 NoExecute, pod transfer to another node
+
+if k describe pod -n kube-system kube-proxy-csjj6:
+Tolerations:                 op=Exists
+                             node.kubernetes.io/disk-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/memory-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/network-unavailable:NoSchedule op=Exists
+                             node.kubernetes.io/not-ready:NoExecute op=Exists
+                             node.kubernetes.io/pid-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/unreachable:NoExecute op=Exists
+                             node.kubernetes.io/unschedulable:NoSchedule op=Exists
+but why it's run on master? because kube-proxy is deamon set and daemon set run on all nodes
+k describe pod -n kube-system kube-apiserver-k8s-master1
+Tolerations:       :NoExecute op=Exists => every node has NoExecute this pod can tolerate like static pods
+
+static pod => pods is master => ls /etc/kubernetes/manifests/
+etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
+
+for e normal pod like coredns:
+Tolerations:                 CriticalAddonsOnly op=Exists
+                             node-role.kubernetes.io/control-plane:NoSchedule
+                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+how to add taint on node:
+k taint node k8s-worker2 node-type=production:NoSchedule

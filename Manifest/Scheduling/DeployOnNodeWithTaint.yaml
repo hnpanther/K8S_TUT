@@ -1,0 +1,32 @@
+# k taint node k8s-worker2 node-type=production:NoSchedule
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dp
+  namespace: hnp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      tolerations:
+      - key: node-type
+        operator: "Equal"
+        value: production
+        effect: NoSchedule
+      - key: node.kubernetes.io/unreachable # we can use set unreachable on value or on key
+        operator: "Exists"
+        effect: NoExecute
+        tolerationSeconds: 300 # for 300 sec if this node unreachable keep on this node after that if node not up, terminate and transfer pod
+      containers:
+      - name: nginx
+        image: nginx:1.27.2
+        ports:
+        - containerPort: 80
+          name: http
