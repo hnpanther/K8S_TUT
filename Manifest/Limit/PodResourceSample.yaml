@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: requests-pod
+  namespace: hnp
+spec:
+  containers:
+  - image: busybox
+    command: ["dd", "if=/dev/zero", "of=/dev/null"]
+    name: main              
+    resources:              
+      requests:   # it's just request for resource, may be usage will be higher or lower at runtime but it's need for start. kubernetes gurantee it's should be accessable!
+        cpu: 200m   # 1 core=1000m 
+        memory: 10Mi
+      limits:    # maximum. if we just use limit is assume request=limit
+        cpu: 300m  # cpu: 1 => means one core
+        memory: 20Mi

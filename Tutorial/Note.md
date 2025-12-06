@@ -183,3 +183,36 @@ metadata:
 NetworkPolicy:
 access pods together in same or different namespace
 default: every pods can access every pods
+
+
+-------------------------------------
+Scheduler decide pod runs on which node:
+ListRequestedPriority:
+most free space
+MostRequestedPriority:
+low free space
+so Scheduler watch request, not limit
+in resource if we have 4000m cpu
+and a pod request 200m and another pod request 1200m, and then two pod need more cpu, kuber continue 1/5 of remain for this pods
+
+for java app is so important set xmx otherwise jvm use all ram(limit for jvm app not effect)
+
+-- qos => quality of service:
+1-best effort => lower qos
+2-berse table
+3-garanteed => higher qos
+pod without any request and limit => best effort
+pod with one container with unequal request and limit => berse table
+pod with multiple container and one container has resource and another one doesn't have => berse table
+pod with request=limit for all container(should set cpu and limit for all container in pod) => garanteed
+
+oom => space of remain ram of container => set score base on oom for each container and if whenever need to delete a container, higher score delete first
+
+for set limit in namespace on all limit: use LimitRange for default for all pods
+k get limitrange
+
+for set limitation on namespace we use ResourceQuota. for example a namespace should be 2g ram
+if we apply ResourceQuota, every pod shoud have request and limit otherwise it's not run
+so we'd better use LimitRange for Default for all pods
+
+by k descrive resourcequotas  => we can see used and and hard resource
