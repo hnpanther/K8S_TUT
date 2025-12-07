@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dp
+  namespace: hnp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: item
+  template:
+    metadata:
+      labels:
+        app: item
+    spec:
+      affinity:
+        nodeAffinity:
+          #          requiredDuringSchedulingIgnoredDuringExecution:
+          #            nodeSelectorTerms:
+          #            - matchExpressions:
+          #              - key: gpu
+          #                operator: In
+          #                values:
+          #                - "true"
+          preferredDuringSchedulingIgnoredDuringExecution:    
+          - weight: 80                               
+            preference:                              
+              matchExpressions:                      
+              - key: availability-zone               
+                operator: In                         
+                values:                              
+                - tehran                              
+          - weight: 20                     
+            preference:                    
+              matchExpressions:            
+              - key: availability-zone
+                operator: In               
+                values:                    
+                - tabriz
+      containers:
+      - name: nginx
+        image: nginx:1.27.2
+        ports:
+        - containerPort: 80
+          name: http

@@ -263,3 +263,13 @@ Tolerations:                 CriticalAddonsOnly op=Exists
 
 how to add taint on node:
 k taint node k8s-worker2 node-type=production:NoSchedule
+
+at first, just master has taint
+
+
+NodeAffinity => pod run on which node
+AntiNodeAffinity => pod should not run on which node
+PodAffinity => pod run on node that has another pod with specific spec
+PodAntiAffinity => pod should not run on node that has another pod with specific spec
+
+-------------------------------------------

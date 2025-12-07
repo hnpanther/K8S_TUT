@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dp-bc
+  namespace: hnp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: item2
+  template:
+    metadata:
+      labels:
+        app: item2
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchLabels:
+                app: item
+      containers:
+      - name: nginx
+        image: nginx:1.27.2
+        ports:
+        - containerPort: 80
+          name: http
