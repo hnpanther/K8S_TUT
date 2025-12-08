@@ -273,3 +273,13 @@ PodAffinity => pod run on node that has another pod with specific spec
 PodAntiAffinity => pod should not run on node that has another pod with specific spec
 
 -------------------------------------------
+
+CRD or Custom Resource Definition
+Extend api server for doing something in whole cluster
+for example we can use kubectl get monitoring and so on
+install elk without custom resource is complicated
+we can use operator that create crd for interact with api server
+
+what is operator ? for example operator is stateful pod
+first we create a crd and then create operator for watch this new resource
+crd create a new apiVersion and kind then we use them
