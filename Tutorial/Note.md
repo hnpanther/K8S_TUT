@@ -283,3 +283,26 @@ we can use operator that create crd for interact with api server
 what is operator ? for example operator is stateful pod
 first we create a crd and then create operator for watch this new resource
 crd create a new apiVersion and kind then we use them
+
+
+-----------------------------------------------
+HPA Horizontal Pod Auto scale:
+k8s auto scale replica(we learned fixed replica)
+k8s detemined this with some thresold and metrics like cpu
+
+desiredReplica = ceil[currentReplica * (currentMetricValue / desiredMetricValue)]
+
+for that, we use HorizentalPodAutoscaler
+also we need metric server for k8s to determind metrics like kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.8.0/components.yaml
+
+then we can use:
+k top pod -A
+
+note:
+for metric server we shoud add this two line before apply:
+in spec.template.spec.containers[0].args:
+        - --kubelet-insecure-tls
+        - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+
+or after apply use edit:
+kubectl -n kube-system edit deploy metrics-server
