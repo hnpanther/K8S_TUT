@@ -369,3 +369,25 @@ and add new section for example for domain.hnp:53
 (or for test we can add just a record instead of change coredns config map)
 
 ---------------------------------------------------
+
+in multi master cluster we have two load balancer(like ha proxy) and keep alive on two server
+and masters and worker connect together via this load balancers
+we should install containerd,kublet,kubeadm an all masters and workers server
+on ha proxy servers we set all masters for backend
+and for keepalived set server ip and another ha ip and set a vip virtual ip address(reserve in network) 
+and client just see this ip
+
+for one master we use below line:
+sudo kubeadm init --apiserver-advertise-address=192.168.211.131 --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.32.9
+advertise-addres was server ip
+but in multi master we use this:
+sudo kubeadm init --control-plane-endpoint=Z.Z.Z.Z --upload-certs --apiserver-advertise-address=192.168.211.131 --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.32.9
+
+that Z.Z.Z.Z is reserved vip virtual ip
+
+then after install give us two command for join master and worker and another things just like one master
+we can't conver one master cluster to multi master cluster
+
+
+-----------------------------------------------------
+
