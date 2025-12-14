@@ -359,3 +359,13 @@ helm list
 helm uninstall my-tomcat
 
 ------------------------------------------
+
+DNS
+in k8s cluster with coredns we have a powerful dns
+but for connect to service outside of cluster or from outside to inside cluster we'd better use dns server like bind
+if we want our cluster connect to our dns server we should edit config map of coredns:
+k edit cm -n kube-system coredns
+and add new section for example for domain.hnp:53
+(or for test we can add just a record instead of change coredns config map)
+
+---------------------------------------------------
