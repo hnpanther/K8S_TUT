@@ -306,3 +306,17 @@ in spec.template.spec.containers[0].args:
 
 or after apply use edit:
 kubectl -n kube-system edit deploy metrics-server
+
+---------------------------------
+cni container network interface
+calico,flannel and so on
+
+network in kubernetes is so important
+calico per pod create a virtual interface outside of pod(naming calico1234...) and create a virtual router in each node
+this router and outer interface locate between internal interface of pod and real interface of node
+in ClusterIP service:
+calico in every request doing nat and change destination and so on but source ip not change
+note: nat do in calico outer interface
+
+in NodePort service:
+a client outside of cluster call a service and everything is same
