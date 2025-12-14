@@ -320,3 +320,42 @@ note: nat do in calico outer interface
 
 in NodePort service:
 a client outside of cluster call a service and everything is same
+
+------------------------------------------
+helm:
+one of most important task of helm is package manager
+
+Helm chart Include this main file:
+Chart.yaml just description and definiton about chart
+template dir: containt services, configs and other resource
+values.yaml : configs of resources
+
+first we need install helm:
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
+chmod 700 get_helm.sh
+./get_helm.sh
+helm version
+
+or
+
+curl -LO https://get.helm.sh/helm-v4.0.2-linux-amd64.tar.gzk        (if first test previous method we can get this url)
+tar -zxvf helm-v4.0.2-linux-amd64.tar.gz
+sudo mv linux-amd64/helm /usr/local/bin/helm
+sudo chmod +x /usr/local/bin/helm
+helm version
+
+then create helm-repo-proxy in nexus with this url:
+https://charts.bitnami.com/bitnami
+
+then add repo:
+helm repo add helm-repo-proxy http://192.168.211.1:8081/repository/helm-repo-proxy/
+helm install mypostgres bitnami/postgresql -n hnp
+
+another way download chart(folder of chart-for example mydb_dir)
+then 
+helm install mypostgres ./mydb_dir
+then:
+helm list
+helm uninstall my-tomcat
+
+------------------------------------------
